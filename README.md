@@ -1,2 +1,2 @@
-# vs6_servercore_ltsc2022
-Visual Studio 6 running on server core image
+# vs6_noble
+Visual Studio 6 running on Ubuntu Noble with wine.
