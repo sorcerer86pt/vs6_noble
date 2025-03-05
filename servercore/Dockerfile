@@ -58,7 +58,7 @@ foreach ($path in $paths) { \
 
 # Set environment variables
 ENV PATH="C:\opt\vc\BIN;%PATH%"
-ENV INCLUDE="C:\opt\vc\INCLUDE;%INCLUDE%"
-ENV LIB="C:\opt\vc\LIB;%LIB%"
+ENV INCLUDE="C:\opt\vc\ATL\INCLUDE;C:\opt\vc\INCLUDE;C:\opt\vc\MFC\INCLUDE;%INCLUDE%"
+ENV LIB="C:\opt\vc\LIB;C:\opt\vc\MFC\LIB;%LIB%"
 
 WORKDIR C:\\opt\\vc
