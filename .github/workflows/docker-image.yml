@@ -11,10 +11,11 @@ jobs:
         - uses: actions/checkout@v4
         - name: Build Linux Docker image
           run: docker build linux --file linux/Dockerfile --tag sorcerer86pt/vs6noble:${{ github.sha }}
-    build-windows:
-        runs-on: windows-latest
-        steps:
-        - uses: actions/checkout@v4
-        - name: Build Windows Docker image
-          run: docker build servercore --file servercore/Dockerfile --tag sorcerer86pt/vc6servercore:${{ github.sha }}
-          shell: powershell
+    # NO github docker windows container builders: https://github.com/actions/runner/issues/904
+    # build-windows:
+    #     runs-on: windows-latest
+    #     steps:
+    #     - uses: actions/checkout@v4
+    #     - name: Build Windows Docker image
+    #       run: docker build servercore --file servercore/Dockerfile --tag sorcerer86pt/vc6servercore:${{ github.sha }}
+    #       shell: powershell
