@@ -42,6 +42,6 @@ RUN \
 RUN wine winver
 
 COPY setup.bat /opt/vc/setup.bat
-COPY copy_includes.sh /opt/vc/copy_includes.shhttps://github.com/giulioz/vc6-docker/blob/main/Dockerfile
+COPY copy_includes.sh /opt/vc/copy_includes.sh
 WORKDIR /opt/vc
 CMD wine cmd /k setup.bat
