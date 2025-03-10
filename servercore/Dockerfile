@@ -23,42 +23,28 @@ COPY --from=download ["/Program Files/7-Zip", "/Program Files/7-Zip"]
 
 SHELL ["powershell", "-Command"]
 
+# Install GIT
+ENV GIT_ZIP_URL https://github.com/git-for-windows/git/releases/download/v2.48.1.windows.1/MinGit-2.48.1-64-bit.zip  
+RUN Invoke-WebRequest -Uri  $env:GIT_ZIP_URL -OutFile 'git.zip'; \
+    Expand-Archive -Path 'git.zip' -DestinationPath 'C:\\git'; \
+    Remove-Item git.zip -Force; \
+    $env:PATH = 'C:\\git\\cmd;C:\\git\\bin;C:\\git\\usr\\bin;{0}' -f $env:PATH; \
+    [Environment]::SetEnvironmentVariable('PATH', $env:PATH, [EnvironmentVariableTarget]::Machine); \
+    Write-Host 'Completed git install.'
+
 RUN $ErrorActionPreference = 'Stop'; \
     $ProgressPreference = 'SilentlyContinue'; \
     New-Item -Path 'C:\opt\vc' -ItemType Directory -Force; \
-    Invoke-WebRequest -Uri "https://winworldpc.com/download/c39228e2-80ba-715d-2411-c3a4c2a90f70/from/c39ac2af-c381-c2bf-1b25-11c3a4e284a2" \
+    Invoke-WebRequest -Uri "https://github.com/ahaczewski/GeneralsToochain/releases/download/v1/VC6.7z" \
         -OutFile "C:\opt\vc\vc.7z"; \
-    & 'C:\Program Files\7-Zip\7z.exe' x 'C:\opt\vc\vc.7z' -o'C:\opt\vc' -y -r; \
-    New-Item -Path 'C:\opt\vc\setup' -ItemType Directory -Force; \
-    & 'C:\Program Files\7-Zip\7z.exe' x 'C:\opt\vc\Microsoft Visual C++ 6.0 Standard.iso' -o'C:\opt\vc\setup' -y -r; \
-    Remove-Item -Path 'C:\opt\vc\*.iso','C:\opt\vc\*.txt','C:\opt\vc\*.7z' -Force; \
-    Move-Item -Path 'C:\opt\vc\setup\VC98\*' -Destination 'C:\opt\vc\' -Force
+    & 'C:\Program Files\7-Zip\7z.exe' x 'C:\opt\vc\vc.7z' -o'C:\Program Files (x86)\Microsoft Visual Studio\' -y -r;
 
-# Rename and clean up directories
-RUN $paths = @( \
-    @{Old='C:\opt\vc\CRT\SRC\ALGRITHM'; New='C:\opt\vc\CRT\SRC\ALGORITHM'}, \
-    @{Old='C:\opt\vc\CRT\SRC\FCTIONAL'; New='C:\opt\vc\CRT\SRC\FUNCTIONAL'}, \
-    @{Old='C:\opt\vc\CRT\SRC\MAKEFILE'; New='C:\opt\vc\CRT\SRC\EXT_MKF'}, \
-    @{Old='C:\opt\vc\CRT\SRC\STDXCEPT'; New='C:\opt\vc\CRT\SRC\STDEXCEPT'}, \
-    @{Old='C:\opt\vc\CRT\SRC\STREAMBF'; New='C:\opt\vc\CRT\SRC\STREAMBUF'}, \
-    @{Old='C:\opt\vc\CRT\SRC\STRSTREM'; New='C:\opt\vc\CRT\SRC\STRSTREAM'}, \
-    @{Old='C:\opt\vc\CRT\SRC\XCEPTION'; New='C:\opt\vc\CRT\SRC\EXCEPTION'}, \
-    @{Old='C:\opt\vc\INCLUDE\ALGRITHM'; New='C:\opt\vc\INCLUDE\ALGORITHM'}, \
-    @{Old='C:\opt\vc\INCLUDE\FCTIONAL'; New='C:\opt\vc\INCLUDE\FUNCTIONAL'}, \
-    @{Old='C:\opt\vc\INCLUDE\STDXCEPT'; New='C:\opt\vc\INCLUDE\STDEXCEPT'}, \
-    @{Old='C:\opt\vc\INCLUDE\STREAMBF'; New='C:\opt\vc\INCLUDE\STREAMBUF'}, \
-    @{Old='C:\opt\vc\INCLUDE\STRSTREM'; New='C:\opt\vc\INCLUDE\STRSTREAM'}, \
-    @{Old='C:\opt\vc\INCLUDE\XCEPTION'; New='C:\opt\vc\INCLUDE\EXCEPTION'} \
-); \
-foreach ($path in $paths) { \
-    if (Test-Path $path.Old) { \
-        Move-Item -Path $path.Old -Destination $path.New -Force; \
-    } \
-}
+# Install CMake silently
+ENV CMAKE_URL https://github.com/Kitware/CMake/releases/download/v3.31.6/cmake-3.31.6-windows-x86_64.msi
+RUN Invoke-WebRequest -Uri $env:CMAKE_URL -OutFile 'CMake.msi'; \
+    Start-Process msiexec.exe -ArgumentList '/i CMake.msi /quiet /norestart' -NoNewWindow -Wait; \
+    Remove-Item CMake.msi -Force; \
+    Write-Host 'Completed CMake install.'
 
-# Set environment variables
-ENV PATH="C:\opt\vc\BIN;%PATH%"
-ENV INCLUDE="C:\opt\vc\ATL\INCLUDE;C:\opt\vc\INCLUDE;C:\opt\vc\MFC\INCLUDE;%INCLUDE%"
-ENV LIB="C:\opt\vc\LIB;C:\opt\vc\MFC\LIB;%LIB%"
 
-WORKDIR C:\\opt\\vc
+WORKDIR C:\\Program Files (x86)\\Microsoft Visual Studio\\
