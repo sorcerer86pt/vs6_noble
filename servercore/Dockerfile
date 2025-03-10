@@ -28,8 +28,6 @@ ENV GIT_ZIP_URL https://github.com/git-for-windows/git/releases/download/v2.48.1
 RUN Invoke-WebRequest -Uri  $env:GIT_ZIP_URL -OutFile 'git.zip'; \
     Expand-Archive -Path 'git.zip' -DestinationPath 'C:\\git'; \
     Remove-Item git.zip -Force; \
-    $env:PATH = 'C:\\git\\cmd;C:\\git\\bin;C:\\git\\usr\\bin;{0}' -f $env:PATH; \
-    [Environment]::SetEnvironmentVariable('PATH', $env:PATH, [EnvironmentVariableTarget]::Machine); \
     Write-Host 'Completed git install.'
 
 RUN $ErrorActionPreference = 'Stop'; \
@@ -45,6 +43,8 @@ RUN Invoke-WebRequest -Uri $env:CMAKE_URL -OutFile 'CMake.msi'; \
     Start-Process msiexec.exe -ArgumentList '/i CMake.msi /quiet /norestart' -NoNewWindow -Wait; \
     Remove-Item CMake.msi -Force; \
     Write-Host 'Completed CMake install.'
+
+ENV PATH="c:\Program Files\CMake\bin;C:\git\cmd;C:\git\bin;C:\git\usr\bin;%PATH%"
 
 
 WORKDIR C:\\Program Files (x86)\\Microsoft Visual Studio\\
