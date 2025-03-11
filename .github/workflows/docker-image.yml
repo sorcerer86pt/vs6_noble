@@ -11,16 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Build Linux Docker image
-        run: |
-          docker build -t sorcerer86pt/vs6noble:${{ github.sha }} -f linux/Dockerfile linux
-
-      - name: Push Docker image to Docker Hub
-        uses: timo-reymann/dockerhub-semantic-release-gh-action@v1
+      - name: Publish Docker Image
+        uses: tinact/docker.image@1.0.2
         with:
-          image: sorcerer86pt/vs6noble
-          dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
-          dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}
-          github_token: ${{ secrets.PAT }}
-          platforms: linux/amd64,linux/arm64
+          image_name: sorcerer86pt/vs6noble
+          dockerfile: linux/Dockerfile
+          registry_username: ${{ secrets.DOCKERHUB_USERNAME }}
+          registry_password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+                
