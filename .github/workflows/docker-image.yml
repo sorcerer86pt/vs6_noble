@@ -11,12 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Publish Docker Image
-        uses: tinact/docker.image@1.0.2
+      - name: docker-publish-action
+        # You may pin to the exact commit or the version.
+        # uses: minddocdev/docker-publish-action@ad6017e930ca76bcfd4eb08632f2afe87c974be7
+        uses: minddocdev/docker-publish-action@v1.0.0
         with:
-          image_name: sorcerer86pt/vs6noble
+          # The name of the image you would like to push
+          name: sorcerer86pt/vs6noble
+          username: sorcerer86pt
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
           dockerfile: linux/Dockerfile
-          registry_username: ${{ secrets.DOCKERHUB_USERNAME }}
-          registry_password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+          
 
                 
