@@ -41,7 +41,8 @@ ENV WINEDEBUG=-all \
     LIB="Z:\\build\\tools\\vs6\\vc98\\Lib;Z:\\build\\tools\\vs6\\vc98\\MFC\\Lib;Z:\\build\\cnc\\build\\vc6" \
     INCLUDE="Z:\\build\\tools\\vs6\\vc98\\ATL\\INCLUDE;Z:\\build\\tools\\vs6\\vc98\\INCLUDE;Z:\\build\\tools\\vs6\\vc98\\MFC\\INCLUDE;Z:\\build\\tools\\vs6\\vc98\\Include" \
     CC="Z:\\build\\tools\\vs6\\vc98\\bin\\CL.exe" \
-    CXX="Z:\\build\\tools\\vs6\\vc98\\bin\\CL.exe"
+    CXX="Z:\\build\\tools\\vs6\\vc98\\bin\\CL.exe" \
+    GIT_VERSION_STRING="2.49.0"
 
 # Setup Wine prefix and create the temporary folder
 RUN mkdir -p /build/tmp && wineboot
