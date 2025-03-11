@@ -22,5 +22,5 @@ jobs:
           image: sorcerer86pt/vs6noble
           dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
           dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.PAT }}
           platforms: linux/amd64,linux/arm64
