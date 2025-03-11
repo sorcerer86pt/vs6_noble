@@ -1,21 +1,26 @@
 name: Docker Image CI
+
 on:
-    push:
-        branches: [ "main" ]
-    pull_request:
-        branches: [ "main" ]
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
 jobs:
-    build-linux:
-        runs-on: ubuntu-latest
-        steps:
-        - uses: actions/checkout@v4
-        - name: Build Linux Docker image
-          run: docker build linux --file linux/Dockerfile --tag sorcerer86pt/vs6noble:${{ github.sha }}
-    # NO github docker windows container builders: https://github.com/actions/runner/issues/904
-    # build-windows:
-    #     runs-on: windows-latest
-    #     steps:
-    #     - uses: actions/checkout@v4
-    #     - name: Build Windows Docker image
-    #       run: docker build servercore --file servercore/Dockerfile --tag sorcerer86pt/vc6servercore:${{ github.sha }}
-    #       shell: powershell
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Linux Docker image
+        run: |
+          docker build -t sorcerer86pt/vs6noble:${{ github.sha }} -f linux/Dockerfile linux
+
+      - name: Push Docker image to Docker Hub
+        uses: timo-reymann/dockerhub-semantic-release-gh-action@v1
+        with:
+          image: sorcerer86pt/vs6noble
+          dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+          dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          platforms: linux/amd64,linux/arm64
