@@ -8,7 +8,7 @@ RUN apt-get update && \
     dpkg --add-architecture i386 && \
     mkdir -pm755 /etc/apt/keyrings && \
     wget -O - https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor -o /etc/apt/keyrings/winehq-archive.key && \
-    wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/oracular/winehq-oracular.sources && \
+    wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bookworm/winehq-bookworm.sources && \
     apt-get update && \
     apt-get install --install-recommends -y winehq-stable && \
     rm -rf /var/lib/apt/lists/*
