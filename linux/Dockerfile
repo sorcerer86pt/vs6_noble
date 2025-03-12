@@ -1,4 +1,4 @@
-FROM ubuntu:noble
+FROM debian:12-slim
 
 WORKDIR /build
 
